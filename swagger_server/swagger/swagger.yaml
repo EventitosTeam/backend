@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: API para sistema de Eventos
+  description: This is a simple API
+  contact:
+    email: info@eventitos.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/SFENSKE/EventsApi/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://eventitos.com/api/v1/
+  description: Sistema de creacion de eventos y reservas (inscripciones)
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: users
+  description: Operations available to regular users
+paths:
+  /events:
+    get:
+      tags:
+      - "users, admins"
+      summary: searches events
+      description: |
+        By passing in the appropriate options, you can search for
+        available events in the system
+      operationId: search_events
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventItem'
+                x-content-type: application/json
+      x-openapi-router-controller: "swagger_server.controllers.users,_admins_controller"
+  /events/{id}:
+    get:
+      tags:
+      - "users, admins"
+      summary: Get a specific event by ID
+      operationId: get_event_by_id
+      parameters:
+      - name: id
+        in: path
+        description: ID of the event to retrieve
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventItem'
+        "404":
+          description: Event not found
+      x-openapi-router-controller: "swagger_server.controllers.users,_admins_controller"
+  /bookings/{bookingCode}:
+    get:
+      tags:
+      - users
+      summary: Get a user enrolled by userID
+      operationId: get_event_enrolled
+      parameters:
+      - name: bookingCode
+        in: path
+        description: booking code
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookItem'
+        "400":
+          description: Bad request
+      x-openapi-router-controller: swagger_server.controllers.users_controller
+    delete:
+      tags:
+      - users
+      summary: Unregister from an event
+      operationId: delete
+      parameters:
+      - name: bookingCode
+        in: path
+        description: booking code
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: User not found
+      x-openapi-router-controller: swagger_server.controllers.users_controller
+  /events/{event_id}/bookings:
+    post:
+      tags:
+      - users
+      summary: Book a user on an event
+      operationId: post_book
+      parameters:
+      - name: event_id
+        in: path
+        description: id of an event
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestItem'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookItem'
+        "400":
+          description: Bad request
+      x-openapi-router-controller: swagger_server.controllers.users_controller
+components:
+  schemas:
+    EventItem:
+      required:
+      - date
+      - desciption
+      - eventPlaceLat
+      - eventPlaceLon
+      - name
+      - peopleLimit
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del evento
+        desciption:
+          type: string
+          description: Descripcion del evento
+        date:
+          type: string
+          description: Fecha del evento
+        eventPlaceLat:
+          type: string
+          description: Latitud del evento
+        eventPlaceLon:
+          type: string
+          description: Longitud del evento
+        peopleLimit:
+          type: integer
+          description: Limite de la cantidad de personas que puede acceder a un evento
+      example:
+        date: date
+        desciption: desciption
+        eventPlaceLat: eventPlaceLat
+        name: name
+        eventPlaceLon: eventPlaceLon
+        peopleLimit: 0
+    GuestItem:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        dni:
+          type: string
+    BookItem:
+      required:
+      - bookingCode
+      - registered
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/EventItem'
+        bookingCode:
+          type: string
+          description: code
+        registered:
+          type: boolean
+          description: user registered on an event
+      example:
+        registered: true
+        bookingCode: bookingCode
+        event:
+          date: date
+          desciption: desciption
+          eventPlaceLat: eventPlaceLat
+          name: name
+          eventPlaceLon: eventPlaceLon
+          peopleLimit: 0
+

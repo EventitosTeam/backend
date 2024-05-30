@@ -4,6 +4,7 @@ import six
 from swagger_server.models.event_item import EventItem  # noqa: E501
 from swagger_server import util
 
+# TODO: este archivo probablemente no sirva para nada
 
 def get_event_by_id(id):  # noqa: E501
     """Get a specific event by ID

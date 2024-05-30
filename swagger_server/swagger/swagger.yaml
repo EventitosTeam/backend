@@ -14,15 +14,13 @@ servers:
 - url: http://eventitos.com/api/v1/
   description: Sistema de creacion de eventos y reservas (inscripciones)
 tags:
-- name: admins
-  description: Secured Admin-only calls
 - name: users
   description: Operations available to regular users
 paths:
   /events:
     get:
       tags:
-      - "users, admins"
+      - "users"
       summary: searches events
       description: |
         By passing in the appropriate options, you can search for
@@ -38,11 +36,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/EventItem'
                 x-content-type: application/json
-      x-openapi-router-controller: "swagger_server.controllers.users,_admins_controller"
+      x-openapi-router-controller: swagger_server.controllers.users_controller
   /events/{id}:
     get:
       tags:
-      - "users, admins"
+      - "users"
       summary: Get a specific event by ID
       operationId: get_event_by_id
       parameters:
@@ -64,7 +62,7 @@ paths:
                 $ref: '#/components/schemas/EventItem'
         "404":
           description: Event not found
-      x-openapi-router-controller: "swagger_server.controllers.users,_admins_controller"
+      x-openapi-router-controller: swagger_server.controllers.users_controller
   /bookings/{bookingCode}:
     get:
       tags:

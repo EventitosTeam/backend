@@ -7,3 +7,5 @@ mysql-connector-python==8.0.29
 pymysql==1.0.2
 sqlalchemy==1.4.47
 Flask-SQLAlchemy==2.5.1
+Flask==2.2.3
+Werkzeug==2.2.2

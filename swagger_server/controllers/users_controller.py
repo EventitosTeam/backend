@@ -5,7 +5,6 @@ from swagger_server.models.book_item import BookItem  # noqa: E501
 from swagger_server.models.guest_item import GuestItem  # noqa: E501
 from swagger_server import util
 
-
 def delete(booking_code):  # noqa: E501
     """Unregister from an event
 
@@ -17,7 +16,6 @@ def delete(booking_code):  # noqa: E501
     :rtype: None
     """
     return 'do some magic!'
-
 
 def get_event_enrolled(booking_code):  # noqa: E501
     """Get a user enrolled by userID
@@ -59,7 +57,6 @@ def get_event_by_id(id):  # noqa: E501
     :rtype: EventItem
     """
     return 'do some magic!'
-
 
 def search_events():  # noqa: E501
     """searches events

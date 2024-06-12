@@ -4,6 +4,19 @@ import six
 from swagger_server.models.book_item import BookItem  # noqa: E501
 from swagger_server.models.guest_item import GuestItem  # noqa: E501
 from swagger_server import util
+from flask import Blueprint, request
+from swagger_server.schemas.book_schema import BookSchema
+from swagger_server.services.book_service import BookService
+from swagger_server.schemas.event_schema import EventSchema
+from swagger_server.services.event_service import EventService
+from flask import request, jsonify
+
+events = Blueprint('events', __name__)
+book_service = BookService()
+book_schema = BookSchema()
+
+event_service = EventService()
+event_schema = EventSchema()
 
 def delete(booking_code):  # noqa: E501
     """Unregister from an event
@@ -29,22 +42,11 @@ def get_event_enrolled(booking_code):  # noqa: E501
     """
     return 'do some magic!'
 
-
+@events.route('/{event_id}/booking', methods=['POST'])
 def post_book(event_id, body=None):  # noqa: E501
-    """Book a user on an event
+    book = ""
+    return ""
 
-     # noqa: E501
-
-    :param event_id: id of an event
-    :type event_id: str
-    :param body: 
-    :type body: dict | bytes
-
-    :rtype: BookItem
-    """
-    if connexion.request.is_json:
-        body = GuestItem.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
 
 def get_event_by_id(id):  # noqa: E501
     """Get a specific event by ID
@@ -58,6 +60,12 @@ def get_event_by_id(id):  # noqa: E501
     """
     return 'do some magic!'
 
+@events.route('/', methods=['POST'])
+def create_event():
+    event = event_schema.load(request.get_json())
+    return event_service.add_event(event)
+
+@events.route('/', methods=['GET'])
 def search_events():  # noqa: E501
     """searches events
 
@@ -66,4 +74,13 @@ def search_events():  # noqa: E501
 
     :rtype: List[EventItem]
     """
-    return 'do some magic!'
+    return [
+        {
+            "date": "date",
+            "desciption": "desciption",
+            "eventPlaceLat": "eventPlaceLat",
+            "name": "name",
+            "eventPlaceLon": "eventPlaceLon",
+            "peopleLimit": 0
+        }
+    ], 200

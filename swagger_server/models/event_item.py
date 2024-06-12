@@ -27,9 +27,9 @@ class EventItem(db.Model):
     event_place_lon = db.Column(db.String(100), nullable=False)
     people_limit = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, description, date, event_place_lat, event_place_lon, people_limit):
+    def __init__(self, name, desciption, date, event_place_lat, event_place_lon, people_limit):
         self.name = name
-        self.desciption = description
+        self.desciption = desciption
         self.date = date
         self.event_place_lat = event_place_lat
         self.event_place_lon = event_place_lon

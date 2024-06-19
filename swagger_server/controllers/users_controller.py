@@ -12,6 +12,7 @@ from swagger_server.services.event_service import EventService
 from flask import request, jsonify
 
 events = Blueprint('events', __name__)
+bookings = Blueprint('bookings', __name__)
 book_service = BookService()
 book_schema = BookSchema()
 
@@ -30,6 +31,7 @@ def delete(booking_code):  # noqa: E501
     """
     return 'do some magic!'
 
+@bookings.route('/<string:booking_code>', methods=['GET'])
 def get_event_enrolled(booking_code):  # noqa: E501
     """Get a user enrolled by userID
 
@@ -40,14 +42,22 @@ def get_event_enrolled(booking_code):  # noqa: E501
 
     :rtype: BookItem
     """
+    return book_schema.dump(book_service.get_event_enrolled(booking_code))
     return 'do some magic!'
 
-@events.route('/{event_id}/booking', methods=['POST'])
-def post_book(event_id, body=None):  # noqa: E501
-    book = ""
-    return ""
+# /events/{event_id}/bookings
+@events.route('/<int:event_id>/bookings', methods=['POST'])
+def post_book(event_id):  # noqa: E501
+    user = request.get_json()
+    book = {
+        "user": str(user),
+        "event_id": event_id
+    }
+    # return book_service.add_event_book(book, event_id)
+    return book_schema.dump(book_service.add_event_book(book, event_id))
+    # return ""
 
-
+@events.route('/<int:id>', methods=['GET'])
 def get_event_by_id(id):  # noqa: E501
     """Get a specific event by ID
 
@@ -58,11 +68,15 @@ def get_event_by_id(id):  # noqa: E501
 
     :rtype: EventItem
     """
-    return 'do some magic!'
+    return event_schema.dump(event_service.get_event_by_id(id))
 
 @events.route('/', methods=['POST'])
 def create_event():
     event = event_schema.load(request.get_json())
+    # event = {}
+    # print(event)
+    # return "ok", 200
+    # return event
     return event_service.add_event(event)
 
 @events.route('/', methods=['GET'])
@@ -74,13 +88,4 @@ def search_events():  # noqa: E501
 
     :rtype: List[EventItem]
     """
-    return [
-        {
-            "date": "date",
-            "desciption": "desciption",
-            "eventPlaceLat": "eventPlaceLat",
-            "name": "name",
-            "eventPlaceLon": "eventPlaceLon",
-            "peopleLimit": 0
-        }
-    ], 200
+    return event_schema.dump(event_service.get_events(), many=True)

@@ -50,8 +50,9 @@ def main():
     # app.add_api('swagger.yaml', arguments={'title': 'API para sistema de Eventos'}, pythonic_params=True)
     # app.run(port=8080)
 
-    from swagger_server.controllers.users_controller import events
+    from swagger_server.controllers.users_controller import events, bookings
     app.register_blueprint(events, url_prefix='/events')
+    app.register_blueprint(bookings, url_prefix='/bookings')
 
     @app.route('/health')
     def health():

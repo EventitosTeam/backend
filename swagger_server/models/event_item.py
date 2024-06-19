@@ -26,6 +26,7 @@ class EventItem(db.Model):
     event_place_lat = db.Column(db.String(100), nullable=False)
     event_place_lon = db.Column(db.String(100), nullable=False)
     people_limit = db.Column(db.Integer, nullable=False)
+    book_items = db.relationship('BookItem', back_populates='event', cascade="all, delete-orphan")
 
     def __init__(self, name, desciption, date, event_place_lat, event_place_lon, people_limit):
         self.name = name

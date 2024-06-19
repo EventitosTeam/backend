@@ -11,6 +11,7 @@ from swagger_server.database import db
 import logging
 from flask import Flask
 from swagger_server.models import EventItem, BookItem, GuestItem
+from flask_cors import CORS
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -53,6 +54,11 @@ def main():
     from swagger_server.controllers.users_controller import events, bookings
     app.register_blueprint(events, url_prefix='/events')
     app.register_blueprint(bookings, url_prefix='/bookings')
+
+    #Permitir solicitudes de otros origenes
+    cors = CORS(app, support_credentials=True)
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    cors = CORS(app, resources={r"*": {"origins": "*"}})
 
     @app.route('/health')
     def health():

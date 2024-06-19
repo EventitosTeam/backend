@@ -19,7 +19,9 @@ class BookService:
         # book_repository.create(book)
         # return book_schema.dump(book)
         # user["event_id"] = event_id
-        book = book_schema.load(book)
+        create_a_new_book = { "booking_code": str(uuid.uuid4()), "registered": False, "user": book["user"], "event_id": event_id }
+        book = book_schema.load(create_a_new_book)
+        # book = book_schema.load(book)
         return book_repository.create(book)
     
     def get_event_enrolled(self, booking_code):

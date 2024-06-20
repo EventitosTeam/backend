@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def send_mail(to_address: str, subject: str, body: str):
-    from_address = os.getenv('MAIL_ADDRESS')
+    from_address = os.getenv('MAIL_USERNAME')
     password = os.getenv('MAIL_PASSWORD')
     message = MIMEMultipart()
     message['From'] = from_address

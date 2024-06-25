@@ -1,6 +1,6 @@
 import logging
 from flask import Flask
-from flask_testing import TestCase
+from flask_testing import TestCase 
 from swagger_server import db
 from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem

@@ -1,55 +1,82 @@
-# coding: utf-8
+import json
+from __init__ import BaseTestCase
+from swagger_server.models.event_item import EventItem
+from swagger_server.models.book_item import BookItem
 
-from __future__ import absolute_import
+class TestEventController(BaseTestCase):
 
-from flask import json
-from six import BytesIO
+    def test_get_events(self):
+        response = self.client.get("/events/")
+        self.assertEqual(response.status_code, 200)
+        data = response.json
+        self.assertIsInstance(data, list)
+        self.assertGreater(len(data), 0)
 
-from swagger_server.models.book_item import BookItem  # noqa: E501
-from swagger_server.models.guest_item import GuestItem  # noqa: E501
-from swagger_server.test import BaseTestCase
+    def test_get_event_by_id(self):
+        event_id = 1  # Asumiendo que 1 es un event_id válido para la prueba
+        response = self.client.get(f"/events/{event_id}")
+        self.assertEqual(response.status_code, 200)
+        data = response.json
+        self.assertEqual(data["id"], event_id)
 
-
-class TestUsersController(BaseTestCase):
-    """UsersController integration test stubs"""
-
-    def test_delete(self):
-        """Test case for delete
-
-        Unregister from an event
-        """
-        response = self.client.open(
-            '/SFENSKE/EventsApi/1.0.0/bookings/{bookingCode}'.format(booking_code='38400000-8cf0-11bd-b23e-10b96e4ef00d'),
-            method='DELETE')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_get_event_enrolled(self):
-        """Test case for get_event_enrolled
-
-        Get a user enrolled by userID
-        """
-        response = self.client.open(
-            '/SFENSKE/EventsApi/1.0.0/bookings/{bookingCode}'.format(booking_code='booking_code_example'),
-            method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+    def test_get_event_by_id_not_found(self):
+        response = self.client.get("/events/9999")
+        self.assertEqual(response.status_code, 404)
+        data = response.json
+        self.assertEqual(data["detail"], "Event with id 9999 not found")
 
     def test_post_book(self):
-        """Test case for post_book
+        event_id = 1  # Asumiendo que 1 es un event_id válido para la prueba
+        user = {
+            "name": "Test User",
+            "email": "testuser@example.com"
+        }
+        response = self.client.post(
+            f"/events/{event_id}/bookings",
+            data=json.dumps(user),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json
+        self.assertEqual(data["event_id"], event_id)
+        self.assertEqual(data["user"], str(user))
 
-        Book a user on an event
-        """
-        body = GuestItem()
-        response = self.client.open(
-            '/SFENSKE/EventsApi/1.0.0/events/{event_id}/bookings'.format(event_id='event_id_example'),
-            method='POST',
-            data=json.dumps(body),
-            content_type='application/json')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+    def test_create_event(self):
+        new_event_data = {
+            "name": "New Event",
+            "desciption": "Description for new event",
+            "date": "2024-07-01",
+            "event_place_lat": "12.9716",
+            "event_place_lon": "77.5946",
+            "people_limit": 100
+        }
+        response = self.client.post(
+            "/events/",
+            data=json.dumps(new_event_data),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 201)
+        data = response.json
+        self.assertEqual(data["name"], new_event_data["name"])
+        self.assertEqual(data["desciption"], new_event_data["desciption"])
+        self.assertEqual(data["date"], new_event_data["date"])
+        self.assertEqual(data["event_place_lat"], new_event_data["event_place_lat"])
+        self.assertEqual(data["event_place_lon"], new_event_data["event_place_lon"])
+        self.assertEqual(data["people_limit"], new_event_data["people_limit"])
 
+    def test_get_event_enrolled(self):
+        booking_code = "test-booking-code"  # Asumiendo que este es un código de reserva válido para la prueba
+        response = self.client.get(f"/bookings/{booking_code}")
+        self.assertEqual(response.status_code, 200)
+        data = response.json
+        self.assertEqual(data["booking_code"], booking_code)
+
+    def test_delete_booking(self):
+        booking_code = "test-booking-code"  # Asumiendo que este es un código de reserva válido para la prueba
+        response = self.client.delete(f"/bookings/{booking_code}")
+        self.assertEqual(response.status_code, 204)
 
 if __name__ == '__main__':
     import unittest
     unittest.main()
+

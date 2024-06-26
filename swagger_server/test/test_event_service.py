@@ -1,5 +1,6 @@
-import unittest, os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+import unittest
+import sys
+sys.path.insert(0, '../../')
 from swagger_server.services.event_service import EventService
 from swagger_server.models.event_item import EventItem
 from swagger_server.test import BaseTestCase

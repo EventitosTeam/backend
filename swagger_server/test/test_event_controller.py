@@ -1,7 +1,7 @@
-import json, os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-
-from swagger_server.test import BaseTestCase  
+import json
+import sys
+sys.path.insert(0, '../')
+from test import BaseTestCase
 
 class TestEventController(BaseTestCase):
 

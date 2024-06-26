@@ -40,3 +40,5 @@ class TestUsersAdminsController(BaseTestCase):
 if __name__ == '__main__':
     import unittest
     unittest.main()
+
+# Este test no se como lo ha hecho la lucila, pero no me funciona, no se si es porque no tengo el archivo de swagger_server.models.event_item import EventItem  # noqa: E501

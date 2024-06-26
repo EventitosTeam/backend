@@ -4,6 +4,8 @@ import os
 from flask import Flask
 import connexion
 from flask_cors import CORS
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from swagger_server import db
 from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem
@@ -11,7 +13,6 @@ from swagger_server.encoder import JSONEncoder
 from swagger_server.controllers.users_controller import events, bookings
 import unittest
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

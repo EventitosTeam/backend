@@ -10,7 +10,7 @@ from swagger_server.services.book_service import BookService
 from swagger_server.schemas.event_schema import EventSchema
 from swagger_server.services.event_service import EventService
 from flask import request, jsonify
-from swagger_server.mail.function import send_mail
+from swagger_server.mail.function import send_mail, send_admin
 
 events = Blueprint('events', __name__)
 bookings = Blueprint('bookings', __name__)
@@ -54,10 +54,9 @@ def post_book(event_id):  # noqa: E501
         "user": str(user),
         "event_id": event_id
     }
-    # return book_service.add_event_book(book, event_id)
-    # sent = send_mail(user["email"], "Evento pendiente", "Se ha agregado a la lista de invitados", {booking_code})
-    
-    return book_schema.dump(book_service.add_event_book(book, event_id))
+    book_data = book_schema.dump(book_service.add_event_book(book, event_id))
+    sent = send_mail(user["email"], "Evento pendiente", f"Código de invitación: {book_data['booking_code']}." )
+    return jsonify(book_data)
 
 @events.route('/<int:id>', methods=['GET'])
 def get_event_by_id(id):  # noqa: E501

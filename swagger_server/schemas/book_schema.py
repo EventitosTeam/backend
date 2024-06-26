@@ -6,7 +6,7 @@ class BookSchema(Schema):
     id = fields.Int(dump_only=True)
     booking_code = fields.String(required=False)
     registered = fields.Boolean(required=False)
-    user = fields.Dict(required=True)
+    user = fields.String(required=True)
     event_id = fields.Int(required=True)
     event = fields.Nested('EventSchema', required=False)
 

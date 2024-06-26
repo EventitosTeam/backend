@@ -16,8 +16,7 @@ class BookItem(db.Model):
     """
     __tablename__ = 'book_items'
     id = db.Column(db.Integer, primary_key=True)
-    # booking_code = db.Column(db.String(100), nullable=False, default=str(uuid.uuid4()).replace('-', '').upper())
-    booking_code = db.Column(db.String(100), nullable=False, default=str(uuid.uuid4()))
+    booking_code = db.Column(db.String(100), nullable=False)
     registered = db.Column(db.Boolean, nullable=False, default=False)
     user = db.Column(db.String(500), nullable=False)
     # event_id = db.Column(db.Integer, db.ForeignKey('event_item.id'), nullable=False)

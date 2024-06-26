@@ -8,25 +8,26 @@ import pymysql
 from swagger_server.database import db
 
 # db = SQLAlchemy()
-import logging
+import logging, os
 from flask import Flask
 from swagger_server.models import EventItem, BookItem, GuestItem
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+load_dotenv()
 
 def main():
 
 
     logger.info("Inicializando la aplicación Flask")
-    print('hola chau sss')
 
-    HOST = "monorail.proxy.rlwy.net"
-    USER = "root"
-    PASSWORD = "bkxnrrBJXBehfGebmPXHHwbtINaXgOOo"
-    PORT = 32365
-    DB_NAME = "railway"
+    HOST = os.getenv("DB_HOST")
+    USER = os.getenv("DB_USER")
+    PASSWORD = os.getenv("DB_PASSWORD")
+    PORT = os.getenv("DB_PORT")
+    DB_NAME = os.getenv("DB_NAME")
 
 
     app = Flask(__name__)
@@ -45,7 +46,7 @@ def main():
     # Crear todas las tablas en la base de datos
     with app.app_context():
         db.create_all()
-    # db.drop_all()
+        # db.drop_all()
 
     # app.app.json_encoder = encoder.JSONEncoder
     # app.add_api('swagger.yaml', arguments={'title': 'API para sistema de Eventos'}, pythonic_params=True)

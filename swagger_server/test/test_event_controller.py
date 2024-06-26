@@ -1,7 +1,11 @@
-import json, os, sys
+import json
+import sys
+import os
+import unittest
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from swagger_server.test import BaseTestCase  
+from swagger_server.test import BaseTestCase
 
 class TestEventController(BaseTestCase):
 
@@ -78,5 +82,5 @@ class TestEventController(BaseTestCase):
         self.assertEqual(response.status_code, 204)
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
+

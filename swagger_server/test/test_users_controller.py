@@ -1,11 +1,14 @@
-import json, os, sys
+import json
+import os
+import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from __init__ import BaseTestCase
+from swagger_server.test import BaseTestCase
 from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem
+from swagger_server.models.guest_item import GuestItem
 
-class TestEventController(BaseTestCase):
+class TestUsersController(BaseTestCase):
 
     def test_get_events(self):
         response = self.client.get("/events/")
@@ -41,12 +44,13 @@ class TestEventController(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json
         self.assertEqual(data["event_id"], event_id)
-        self.assertEqual(data["user"], str(user))
+        self.assertEqual(data["user"]["name"], user["name"])
+        self.assertEqual(data["user"]["email"], user["email"])
 
     def test_create_event(self):
         new_event_data = {
             "name": "New Event",
-            "desciption": "Description for new event",
+            "description": "Description for new event",
             "date": "2024-07-01",
             "event_place_lat": "12.9716",
             "event_place_lon": "77.5946",
@@ -60,7 +64,7 @@ class TestEventController(BaseTestCase):
         self.assertEqual(response.status_code, 201)
         data = response.json
         self.assertEqual(data["name"], new_event_data["name"])
-        self.assertEqual(data["desciption"], new_event_data["desciption"])
+        self.assertEqual(data["description"], new_event_data["description"])
         self.assertEqual(data["date"], new_event_data["date"])
         self.assertEqual(data["event_place_lat"], new_event_data["event_place_lat"])
         self.assertEqual(data["event_place_lon"], new_event_data["event_place_lon"])
@@ -81,4 +85,5 @@ class TestEventController(BaseTestCase):
 if __name__ == '__main__':
     import unittest
     unittest.main()
+
 

@@ -1,21 +1,22 @@
-import logging, sys, os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-
+import logging
+import sys
+import os
 from flask import Flask
-from flask_testing import TestCase 
+import connexion
+from flask_cors import CORS
 from swagger_server import db
 from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem
 from swagger_server.encoder import JSONEncoder
 from swagger_server.controllers.users_controller import events, bookings
-from flask_cors import CORS 
-import connexion
+import unittest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class BaseTestCase(TestCase):
+class BaseTestCase(unittest.TestCase):
 
     def create_app(self):
         logger.info("Inicializando la aplicación Flask para pruebas")
@@ -43,12 +44,17 @@ class BaseTestCase(TestCase):
         return app.app
 
     def setUp(self):
+        self.app = self.create_app()
+        self.app_context = self.app.app.app_context()
+        self.app_context.push()
         db.create_all()
+        self.client = self.app.app.test_client()
         self.populate_db()
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+        self.app_context.pop()
 
     def populate_db(self):
         event = EventItem(
@@ -72,6 +78,4 @@ class BaseTestCase(TestCase):
         db.session.commit()
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
-

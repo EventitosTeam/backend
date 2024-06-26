@@ -11,7 +11,6 @@ from swagger_server.encoder import JSONEncoder
 from swagger_server.controllers.users_controller import events, bookings
 import unittest
 
-# Asegurarse de que swagger_server esté en el path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 logging.basicConfig(level=logging.INFO)

@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '../../')
 from swagger_server.schemas.book_schema import BookSchema
 from swagger_server.repositories.book_repository import BookRepository
 import uuid, ast, json

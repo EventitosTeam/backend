@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '../../')
 from swagger_server.schemas.event_schema import EventSchema
 from swagger_server.repositories.event_repository import EventRepository
 

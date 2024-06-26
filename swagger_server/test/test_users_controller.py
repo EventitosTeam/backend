@@ -1,4 +1,6 @@
-import json
+import json, os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
 from __init__ import BaseTestCase
 from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem

@@ -2,6 +2,8 @@ from __future__ import absolute_import
 
 from flask import json
 from six import BytesIO
+import os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 from swagger_server.models.event_item import EventItem  # noqa: E501
 from swagger_server.test import BaseTestCase

@@ -1,5 +1,6 @@
-import unittest
+import unittest, os, sys
 from unittest.mock import patch
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from swagger_server.services.book_service import BookService
 
 class TestBookService(unittest.TestCase):

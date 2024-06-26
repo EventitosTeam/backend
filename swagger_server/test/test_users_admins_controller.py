@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 import sys
 sys.path.insert(0, '../../')
 from swagger_server.models.event_item import EventItem  # noqa: E501
-from swagger_server.test import BaseTestCase
+from swagger_server.test.base_test import BaseTestCase
 
 
 class TestUsersAdminsController(BaseTestCase):

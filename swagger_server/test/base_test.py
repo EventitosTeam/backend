@@ -6,10 +6,10 @@ import connexion
 from flask_cors import CORS
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-from swagger_server import db
+from swagger_server.database import db
 from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem
-from swagger_server.encoder import JSONEncoder
+from swagger_server import encoder
 from swagger_server.controllers.users_controller import events, bookings
 import unittest
 
@@ -28,28 +28,30 @@ class BaseTestCase(unittest.TestCase):
         PORT = 32365
         DB_NAME = "railway"
 
-        app = connexion.App(__name__, specification_dir='../swagger/')
-        app.app.json_encoder = JSONEncoder
-        app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-        app.app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}?charset=utf8mb4'
-        app.app.config['TESTING'] = True
+        app = Flask(__name__)
+        app.json_encoder = encoder.FlaskJSONEncoder
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}?charset=utf8mb4'
+        app.config['TESTING'] = True
 
-        app.app.register_blueprint(events, url_prefix='/events')
-        app.app.register_blueprint(bookings, url_prefix='/bookings')
+        # Registrar blueprints
+        app.register_blueprint(events, url_prefix='/events')
+        app.register_blueprint(bookings, url_prefix='/bookings')
 
-        # Permitir solicitudes de otros orígenes
-        cors = CORS(app.app, support_credentials=True)
-        app.app.config['CORS_HEADERS'] = 'Content-Type'
-        cors = CORS(app.app, resources={r"*": {"origins": "*"}})
+        # Configurar CORS
+        CORS(app, support_credentials=True)
 
-        return app.app
+        # Configurar la aplicación de base de datos
+        db.init_app(app)
+
+        return app
 
     def setUp(self):
         self.app = self.create_app()
-        self.app_context = self.app.app.app_context()
+        self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        self.client = self.app.app.test_client()
+        self.client = self.app.test_client()
         self.populate_db()
 
     def tearDown(self):

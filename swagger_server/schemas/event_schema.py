@@ -13,7 +13,7 @@ class EventSchema(Schema):
     @post_load
     def make_event(self, data, **kwargs):
         return EventItem(**data)
-    
+
     SKIP_VALUES = []
     @post_dump
     def remove_skip_values(self, data, **kwargs):

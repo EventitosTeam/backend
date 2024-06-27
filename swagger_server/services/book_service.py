@@ -15,12 +15,18 @@ class BookService:
         user_dict = ast.literal_eval(book_str)
         user_mail = user_dict["email"]
         print("ACA EL MAIL: ",user_mail)
-        create_a_new_book = { "booking_code": str(uuid.uuid4()), "registered": False, "user": book, "event_id": event_id }
+        create_a_new_book = { "booking_code": str(uuid.uuid4()), "registered": False, "user": user_dict, "event_id": event_id }
         booking_code = create_a_new_book["booking_code"]
         book = book_schema.load(create_a_new_book)
         # book = book_schema.load(book)
         sent = send_mail(user_mail, "Evento pendiente", "Se ha agregado a la lista de invitados, codigo de invitación: ")
         return book_repository.create(book)
-    
+
     def get_event_enrolled(self, booking_code):
-        return book_repository.find_one(booking_code)
+        booking = book_repository.find_one(booking_code)
+        if booking:
+            return book_schema.dump(booking)
+        return None
+
+    def delete_booking(self, booking_code):
+        return book_repository.delete(booking_code)

@@ -19,15 +19,15 @@ class BookItem(db.Model):
     # booking_code = db.Column(db.String(100), nullable=False, default=str(uuid.uuid4()).replace('-', '').upper())
     booking_code = db.Column(db.String(100), nullable=False, default=str(uuid.uuid4()))
     registered = db.Column(db.Boolean, nullable=False, default=False)
-    user = db.Column(db.String(500), nullable=False)
+    user = db.Column(db.JSON(500), nullable=False)
     # event_id = db.Column(db.Integer, db.ForeignKey('event_item.id'), nullable=False)
     event_id = db.Column('event_id', db.Integer, db.ForeignKey('event_items.id'), nullable=False)
 
     # event = db.relationship('EventItem', backref=db.backref('book_items', lazy=True))
     event = db.relationship('EventItem', back_populates='book_items')
 
-    # def __init__(self, booking_code, registered, event_id, user):
-    #     self.booking_code = booking_code
-    #     self.registered = registered
-    #     self.user = user
-    #     self.event_id = event_id
+    def __init__(self, booking_code, registered, event_id, user):
+        self.booking_code = booking_code
+        self.registered = registered
+        self.user = user
+        self.event_id = event_id

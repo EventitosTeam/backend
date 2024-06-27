@@ -2,7 +2,8 @@ import unittest, os, sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from swagger_server.services.event_service import EventService
 from swagger_server.models.event_item import EventItem
-from swagger_server import db, create_app
+from swagger_server.database import db
+from swagger_server import create_app
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):

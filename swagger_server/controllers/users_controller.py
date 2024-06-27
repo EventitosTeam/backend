@@ -23,28 +23,22 @@ event_schema = EventSchema()
 def delete(booking_code):  # noqa: E501
     """Unregister from an event
 
-     # noqa: E501
+    # noqa: E501
 
     :param booking_code: booking code
-    :type booking_code: 
+    :type booking_code:
 
     :rtype: None
     """
     return 'do some magic!'
 
 @bookings.route('/<string:booking_code>', methods=['GET'])
-def get_event_enrolled(booking_code):  # noqa: E501
-    """Get a user enrolled by userID
-
-     # noqa: E501
-
-    :param booking_code: booking code
-    :type booking_code: str
-
-    :rtype: BookItem
-    """
-
-    return book_schema.dump(book_service.get_event_enrolled(booking_code))
+def get_event_enrolled(booking_code):
+    """Get a user enrolled by userID"""
+    booking = book_schema.dump(book_service.get_event_enrolled(booking_code))
+    if booking:
+        return jsonify(booking), 200
+    return jsonify({"message": "Booking not found"}), 404
 
 # /events/{event_id}/bookings
 @events.route('/<int:event_id>/bookings', methods=['POST'])
@@ -56,17 +50,17 @@ def post_book(event_id):  # noqa: E501
     }
     # return book_service.add_event_book(book, event_id)
     # sent = send_mail(user["email"], "Evento pendiente", "Se ha agregado a la lista de invitados", {booking_code})
-    
+
     return book_schema.dump(book_service.add_event_book(book, event_id))
 
 @events.route('/<int:id>', methods=['GET'])
 def get_event_by_id(id):  # noqa: E501
     """Get a specific event by ID
 
-     # noqa: E501
+    # noqa: E501
 
     :param id: ID of the event to retrieve
-    :type id: 
+    :type id:
 
     :rtype: EventItem
     """
@@ -79,7 +73,7 @@ def create_event():
     # print(event)
     # return "ok", 200
     # return event
-    return event_service.add_event(event)
+    return event_service.add_event(event), 201
 
 @events.route('/', methods=['GET'])
 def search_events():  # noqa: E501

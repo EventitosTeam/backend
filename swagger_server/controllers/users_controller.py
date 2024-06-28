@@ -20,17 +20,14 @@ book_schema = BookSchema()
 event_service = EventService()
 event_schema = EventSchema()
 
-def delete(booking_code):  # noqa: E501
-    """Unregister from an event
-
-    # noqa: E501
-
-    :param booking_code: booking code
-    :type booking_code:
-
-    :rtype: None
-    """
-    return 'do some magic!'
+@bookings.route('/<string:booking_code>', methods=['DELETE'])
+def delete_booking(booking_code):  # noqa: E501
+    """Unregister from an event"""
+    result = book_service.delete_booking(booking_code)
+    if result:
+        return '', 204
+    else:
+        return jsonify({"error": "Booking not found"}), 404
 
 @bookings.route('/<string:booking_code>', methods=['GET'])
 def get_event_enrolled(booking_code):
@@ -55,16 +52,12 @@ def post_book(event_id):  # noqa: E501
 
 @events.route('/<int:id>', methods=['GET'])
 def get_event_by_id(id):  # noqa: E501
-    """Get a specific event by ID
-
-    # noqa: E501
-
-    :param id: ID of the event to retrieve
-    :type id:
-
-    :rtype: EventItem
-    """
-    return event_schema.dump(event_service.get_event_by_id(id))
+    """Get a specific event by ID"""
+    event = event_schema.dump(event_service.get_event_by_id(id))
+    if event:
+        return event, 200
+    else:
+        return jsonify({"detail": "Event with id "+ str(id) +" not found"}), 404
 
 @events.route('/', methods=['POST'])
 def create_event():

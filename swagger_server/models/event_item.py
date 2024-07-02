@@ -21,28 +21,28 @@ class EventItem(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    desciption = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
     date = db.Column(db.String(100), nullable=False)
     event_place_lat = db.Column(db.String(100), nullable=False)
     event_place_lon = db.Column(db.String(100), nullable=False)
     people_limit = db.Column(db.Integer, nullable=False)
     book_items = db.relationship('BookItem', back_populates='event', cascade="all, delete-orphan")
 
-    def __init__(self, name, desciption, date, event_place_lat, event_place_lon, people_limit):
+    def __init__(self, name, description, date, event_place_lat, event_place_lon, people_limit):
         self.name = name
-        self.desciption = desciption
+        self.description = description
         self.date = date
         self.event_place_lat = event_place_lat
         self.event_place_lon = event_place_lon
         self.people_limit = people_limit
 
-    # def __init__(self, name: str=None, desciption: str=None, _date: str=None, event_place_lat: str=None, event_place_lon: str=None, people_limit: int=None):  # noqa: E501
+    # def __init__(self, name: str=None, description: str=None, _date: str=None, event_place_lat: str=None, event_place_lon: str=None, people_limit: int=None):  # noqa: E501
     #     """EventItem - a model defined in Swagger
 
     #     :param name: The name of this EventItem.  # noqa: E501
     #     :type name: str
-    #     :param desciption: The desciption of this EventItem.  # noqa: E501
-    #     :type desciption: str
+    #     :param description: The description of this EventItem.  # noqa: E501
+    #     :type description: str
     #     :param _date: The _date of this EventItem.  # noqa: E501
     #     :type _date: str
     #     :param event_place_lat: The event_place_lat of this EventItem.  # noqa: E501
@@ -54,7 +54,7 @@ class EventItem(db.Model):
     #     """
     #     self.swagger_types = {
     #         'name': str,
-    #         'desciption': str,
+    #         'description': str,
     #         '_date': str,
     #         'event_place_lat': str,
     #         'event_place_lon': str,
@@ -63,14 +63,14 @@ class EventItem(db.Model):
 
     #     self.attribute_map = {
     #         'name': 'name',
-    #         'desciption': 'desciption',
+    #         'description': 'description',
     #         '_date': 'date',
     #         'event_place_lat': 'eventPlaceLat',
     #         'event_place_lon': 'eventPlaceLon',
     #         'people_limit': 'peopleLimit'
     #     }
     #     self._name = name
-    #     self._desciption = desciption
+    #     self._description = description
     #     self.__date = _date
     #     self._event_place_lat = event_place_lat
     #     self._event_place_lon = event_place_lon
@@ -113,29 +113,29 @@ class EventItem(db.Model):
     #     self._name = name
 
     # @property
-    # def desciption(self) -> str:
-    #     """Gets the desciption of this EventItem.
+    # def description(self) -> str:
+    #     """Gets the description of this EventItem.
 
     #     Descripcion del evento  # noqa: E501
 
-    #     :return: The desciption of this EventItem.
+    #     :return: The description of this EventItem.
     #     :rtype: str
     #     """
-    #     return self._desciption
+    #     return self._description
 
-    # @desciption.setter
-    # def desciption(self, desciption: str):
-    #     """Sets the desciption of this EventItem.
+    # @description.setter
+    # def description(self, description: str):
+    #     """Sets the description of this EventItem.
 
     #     Descripcion del evento  # noqa: E501
 
-    #     :param desciption: The desciption of this EventItem.
-    #     :type desciption: str
+    #     :param description: The description of this EventItem.
+    #     :type description: str
     #     """
-    #     if desciption is None:
-    #         raise ValueError("Invalid value for `desciption`, must not be `None`")  # noqa: E501
+    #     if description is None:
+    #         raise ValueError("Invalid value for `description`, must not be `None`")  # noqa: E501
 
-    #     self._desciption = desciption
+    #     self._description = description
 
     # @property
     # def _date(self) -> str:

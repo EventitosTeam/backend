@@ -56,7 +56,7 @@ class TestUsersController(BaseTestCase):
     def test_create_event(self):
         new_event_data = {
             "name": "New Event",
-            "desciption": "Description for new event",
+            "description": "Description for new event",
             "date": "2024-07-01",
             "event_place_lat": "12.9716",
             "event_place_lon": "77.5946",
@@ -70,7 +70,7 @@ class TestUsersController(BaseTestCase):
         self.assertEqual(response.status_code, 201)
         data = response.json
         self.assertEqual(data["name"], new_event_data["name"])
-        self.assertEqual(data["desciption"], new_event_data["desciption"])
+        self.assertEqual(data["description"], new_event_data["description"])
         self.assertEqual(data["date"], new_event_data["date"])
         self.assertEqual(data["event_place_lat"], new_event_data["event_place_lat"])
         self.assertEqual(data["event_place_lon"], new_event_data["event_place_lon"])

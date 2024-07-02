@@ -4,7 +4,7 @@ from swagger_server.models.event_item import EventItem
 class EventSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.String(required=True)
-    desciption = fields.String(required=True)
+    description = fields.String(required=True)
     date = fields.String(required=True)
     event_place_lat = fields.String(required=True)
     event_place_lon = fields.String(required=True)

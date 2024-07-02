@@ -62,7 +62,7 @@ class BaseTestCase(unittest.TestCase):
     def populate_db(self):
         event = EventItem(
             name='Test Event',
-            desciption='A test event',
+            description='A test event',
             date='2024-06-24',
             event_place_lat='12.9716',
             event_place_lon='77.5946',

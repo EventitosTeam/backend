@@ -144,7 +144,7 @@ components:
     EventItem:
       required:
       - date
-      - desciption
+      - description
       - eventPlaceLat
       - eventPlaceLon
       - name
@@ -154,7 +154,7 @@ components:
         name:
           type: string
           description: Nombre del evento
-        desciption:
+        description:
           type: string
           description: Descripcion del evento
         date:
@@ -171,7 +171,7 @@ components:
           description: Limite de la cantidad de personas que puede acceder a un evento
       example:
         date: date
-        desciption: desciption
+        description: description
         eventPlaceLat: eventPlaceLat
         name: name
         eventPlaceLon: eventPlaceLon
@@ -206,7 +206,7 @@ components:
         bookingCode: bookingCode
         event:
           date: date
-          desciption: desciption
+          description: description
           eventPlaceLat: eventPlaceLat
           name: name
           eventPlaceLon: eventPlaceLon

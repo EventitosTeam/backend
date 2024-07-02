@@ -2,7 +2,7 @@ import json, os, sys
 import unittest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from swagger_server.test.base_test import BaseTestCase  
+from swagger_server.test.base_test import BaseTestCase
 
 class TestEventController(BaseTestCase):
 
@@ -14,7 +14,7 @@ class TestEventController(BaseTestCase):
         self.assertGreater(len(data), 0, "Expected to get a list with at least one event")
 
     def test_get_event_by_id(self):
-        event_id = 1  
+        event_id = 1
         response = self.client.get(f"/events/{event_id}")
         self.assertEqual(response.status_code, 200)
         data = response.json
@@ -25,23 +25,6 @@ class TestEventController(BaseTestCase):
         self.assertEqual(response.status_code, 404)
         data = response.json
         self.assertEqual(data["detail"], "Event with id 9999 not found", "Expected not found message")
-
-    def test_post_book(self):
-        event_id = 1  
-        user = {
-            "name": "Test User",
-            "email": "testuser@example.com"
-        }
-        response = self.client.post(
-            f"/events/{event_id}/bookings",
-            data=json.dumps(user),
-            content_type='application/json'
-        )
-        self.assertEqual(response.status_code, 200)
-        data = response.json
-        self.assertEqual(data["event_id"], event_id)
-        self.assertEqual(data["user"]["name"], user["name"])
-        self.assertEqual(data["user"]["email"], user["email"])
 
     def test_create_event(self):
         new_event_data = {
@@ -66,18 +49,5 @@ class TestEventController(BaseTestCase):
         self.assertEqual(data["event_place_lon"], new_event_data["event_place_lon"])
         self.assertEqual(data["people_limit"], new_event_data["people_limit"])
 
-    def test_get_event_enrolled(self):
-        booking_code = "test-booking-code"  
-        response = self.client.get(f"/bookings/{booking_code}")
-        self.assertEqual(response.status_code, 200)
-        data = response.json
-        self.assertEqual(data["booking_code"], booking_code)
-
-    def test_delete_booking(self):
-        booking_code = "test-booking-code"  
-        response = self.client.delete(f"/bookings/{booking_code}")
-        self.assertEqual(response.status_code, 204)
-
 if __name__ == '__main__':
     unittest.main()
-

@@ -11,6 +11,7 @@ from swagger_server.models.event_item import EventItem
 from swagger_server.models.book_item import BookItem
 from swagger_server import encoder
 from swagger_server.controllers.users_controller import events, bookings
+from swagger_server.services.book_service import BookService
 import unittest
 
 
@@ -53,6 +54,7 @@ class BaseTestCase(unittest.TestCase):
         db.create_all()
         self.client = self.app.test_client()
         self.populate_db()
+        self.book_service = BookService()
 
     def tearDown(self):
         db.session.remove()

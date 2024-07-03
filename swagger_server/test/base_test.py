@@ -12,6 +12,7 @@ from swagger_server.models.book_item import BookItem
 from swagger_server import encoder
 from swagger_server.controllers.users_controller import events, bookings
 from swagger_server.services.book_service import BookService
+from swagger_server.services.event_service import EventService
 import unittest
 
 
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 class BaseTestCase(unittest.TestCase):
 
     def create_app(self):
-        logger.info("Inicializando la aplicación Flask para pruebas")
+        logger.info(" Inicializando la aplicación Flask para pruebas")
 
         HOST = "monorail.proxy.rlwy.net"
         USER = "root"
@@ -40,7 +41,7 @@ class BaseTestCase(unittest.TestCase):
         app.register_blueprint(bookings, url_prefix='/bookings')
 
         # Configurar CORS
-        CORS(app, support_credentials=True)
+        CORS(app, supports_credentials=True)
 
         # Configurar la aplicación de base de datos
         db.init_app(app)
@@ -55,6 +56,7 @@ class BaseTestCase(unittest.TestCase):
         self.client = self.app.test_client()
         self.populate_db()
         self.book_service = BookService()
+        self.event_service = EventService()
 
     def tearDown(self):
         db.session.remove()
